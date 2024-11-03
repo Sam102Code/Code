@@ -1,0 +1,55 @@
+
+# Create a new directed graph
+family_tree = Digraph(comment="Legere and Kelphts Family Tree")
+family_tree.attr(size="8,8")
+family_tree.attr(rankdir="TB")  # Top-to-bottom layout
+
+# Lēgere Family
+family_tree.node("King_Legere", "King Lēgere\n(DECEASED)")
+family_tree.node("Mary_Legere", "Mary Lēgere\n(UPIR)")
+family_tree.edge("King_Legere", "Mary_Legere", label="Married")
+
+# Children of King Lēgere and Mary Lēgere
+for i in range(1, 5):
+    family_tree.node(f"Child_{i}_Legere", f"Child {i} Lēgere\n(UPIR, Appearance: 32-40)")
+    family_tree.edge("King_Legere", f"Child_{i}_Legere")
+    family_tree.edge("Mary_Legere", f"Child_{i}_Legere")
+
+    # Partners for each child
+    family_tree.node(f"Partner_{i}_Legere", f"Partner {i} Lēgere\n(DECEASED)")
+    family_tree.edge(f"Child_{i}_Legere", f"Partner_{i}_Legere", label="Married")
+
+    # Grandchildren for each child
+    for j in range(1, 4):  # Limited grandchildren for simplicity
+        family_tree.node(f"Grandchild_{i}_{j}_Legere", f"Grandchild {j} Lēgere\n(UPIR, Appearance: 17-25)")
+        family_tree.edge(f"Child_{i}_Legere", f"Grandchild_{i}_{j}_Legere")
+
+# Kelphts Family
+family_tree.node("Kardia_Kelphts", "Kardia Kelphts\n(UPIR)")
+family_tree.node("Florence_Opiln", "Florence Opiln\n(Married to Kardia)")
+family_tree.edge("Kardia_Kelphts", "Florence_Opiln", label="Married")
+
+# Ex-wives of Kardia Kelphts
+for i in range(1, 5):
+    family_tree.node(f"Wife_Kelphts_{i}", f"Wife Kelphts {i}\n(DECEASED)")
+    family_tree.edge("Kardia_Kelphts", f"Wife_Kelphts_{i}", label="Ex-Wife")
+
+    # Children of each wife with Kardia Kelphts
+    for j in range(1, 4):  # Limited children for simplicity
+        child_label = f"Child {j} (from Wife {i}) Kelphts\n(UPIR, Appearance: 32-40)"
+        family_tree.node(f"Child_Kelphts_{i}_{j}", child_label)
+        family_tree.edge(f"Wife_Kelphts_{i}", f"Child_Kelphts_{i}_{j}")
+        family_tree.edge("Kardia_Kelphts", f"Child_Kelphts_{i}_{j}")
+
+        # Grandchildren for each child
+        for k in range(1, 4):  # Limited grandchildren for simplicity
+            grandchild_label = f"Grandchild {k} Kelphts\n(UPIR, Appearance: 17-25)"
+            family_tree.node(f"Grandchild_Kelphts_{i}_{j}_{k}", grandchild_label)
+            family_tree.edge(f"Child_Kelphts_{i}_{j}", f"Grandchild_Kelphts_{i}_{j}_{k}")
+
+# Save and render the family tree image
+output_path = "/mnt/data/FamilyTree_Legere_Kelphts_Visual.png"
+family_tree.format = 'png'
+family_tree.render(filename=output_path, cleanup=True)
+
+output_path
